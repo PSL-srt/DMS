@@ -631,8 +631,12 @@ async function callBackend(action, payload) {
   try {
     const res = await fetch(BACKEND_URL, {
       method: 'POST',
-      body: JSON.stringify({ action: action, payload: payload }),
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' } // ใช้ text/plain เพื่อเลี่ยง CORS Preflight ป้องกัน Error
+      mode: 'cors',
+      redirect: 'follow',
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8' // สำคัญมาก: text/plain ช่วยลดการส่ง Preflight request
+      },
+      body: JSON.stringify({ action: action, payload: payload })
     });
     return await res.json();
   } catch (err) {
